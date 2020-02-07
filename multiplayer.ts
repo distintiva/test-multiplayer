@@ -14,6 +14,7 @@ namespace multiplayer {
         jacdac.controllerService.stop();
 
        
+       
     }
 
     // group="Gameplay"
@@ -24,6 +25,37 @@ namespace multiplayer {
         funcOnConnected = a;
         return;
     }
+
+    // group="Gameplay"
+    //% blockId=drawTitle block="show title %text || subtitle %sub | color %color"
+    //% blockAllowMultiple=0
+    //% color.defl=1
+    //% color.min=1 color.max=15
+    //% text.defl=""
+    //% sub.defl=""
+    //% expandableArgumentMode="toggle"
+    export function drawTitle(text:string, sub:string, color:number): void {
+        waitTitle = text;
+        waitSubtitle = sub;
+        waitTitleColor = color;
+    }
+
+    // group="Gameplay"
+    //% blockAllowMultiple=0
+    //% color.defl=1
+    //% color.min=1 color.max=15
+    //% text.defl=""
+    //% sub.defl=""
+    //% expandableArgumentMode="toggle"
+    export function moveSrpites(text: string, sub: string, color: number): void {
+        waitTitle = text;
+        waitSubtitle = sub;
+        waitTitleColor = color;
+
+        
+    }
+ 
+
 
     game.onShade(function () {
         waitForOtherPlayer();
@@ -41,6 +73,8 @@ enum ProgramState {
 
 let funcOnConnected: () => void;
 
+let waitTitle ="", waitSubtitle = "", waitTitleColor = 1;
+
 let programState = ProgramState.Waiting;
 
 let gameStarted = false;
@@ -57,8 +91,8 @@ let readyCount = 3000;
 function waitForOtherPlayer() {
     if (programState === ProgramState.Waiting) {
 
-        screen.printCenter("SPACE", 10, 1, image.font12);
-        screen.printCenter("DESTROYER", 26, 1, image.font12);
+        screen.printCenter(waitTitle, 10, waitTitleColor, image.font12);
+        screen.printCenter(waitSubtitle, 26, waitTitleColor, image.font12);
 
         screen.printCenter("Waiting for connection", 80, 9, image.font8);
 
