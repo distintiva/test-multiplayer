@@ -27,7 +27,7 @@ namespace multiplayer {
     }
 
     // group="Gameplay"
-    //% blockId=drawTitle block="show title %text || subtitle %sub | color %color"
+    //% blockId=drawTitle block="show title $text || subtitle $sub | color $color"
     //% blockAllowMultiple=0
     //% color.defl=1
     //% color.min=1 color.max=15
@@ -41,16 +41,25 @@ namespace multiplayer {
     }
 
     // group="Gameplay"
+    
+    //% blockId="moveplayers" block="move $player1=variables_get(player1) $player2=variables_get(player2) ||vx $vx vy $vy"
+    //% vx.defl=100 vy.defl=100
     //% blockAllowMultiple=0
-    //% color.defl=1
-    //% color.min=1 color.max=15
-    //% text.defl=""
-    //% sub.defl=""
     //% expandableArgumentMode="toggle"
-    export function moveSrpites(text: string, sub: string, color: number): void {
-        waitTitle = text;
-        waitSubtitle = sub;
-        waitTitleColor = color;
+    //% inlineInputMode=inline
+    export function movePlayers(player1:Sprite, player2:Sprite, vx:number=100, vy:number=100): void {
+       pl1 = player1;
+       pl2 = player2;
+       _vx= vx;
+       _vy= vy;
+
+       if (isPlayerOne()) {
+           controller.moveSprite(pl1, _vx, _vy);
+
+       } else {
+           controller.moveSprite(pl2, _vx, _vy);
+
+       }
 
         
     }
@@ -74,6 +83,9 @@ enum ProgramState {
 let funcOnConnected: () => void;
 
 let waitTitle ="", waitSubtitle = "", waitTitleColor = 1;
+
+let pl1:Sprite, pl2:Sprite;
+let _vx:number=100, _vy:number=100;
 
 let programState = ProgramState.Waiting;
 
@@ -119,7 +131,16 @@ function waitForOtherPlayer() {
 
         }
 
-        screen.printCenter("GET READY", 26, 1, dbFont);
+        if( isPlayerOne() ){
+         screen.printCenter("GET READY 1", 26, 1, dbFont);
+        // controller.moveSprite(pl1,_vx, _vy);
+        
+        }else{
+            screen.printCenter("GET READY 2", 26, 1, dbFont);
+         //   controller.moveSprite(pl2, _vx, _vy);
+          
+        }
+
         screen.printCenter("" + Math.idiv(readyCount, 1000), 80, 1, dbFont);
     }
 }

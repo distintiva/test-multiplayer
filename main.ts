@@ -1,9 +1,6 @@
-function startGame () {
-	
-}
 multiplayer.onConnected(function () {
     scene.setBackgroundColor(4)
-    mySprite = sprites.create(img`
+    player1 = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -21,9 +18,8 @@ multiplayer.onConnected(function () {
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.Player)
-    mySprite.setPosition(27, 21)
-    controller.moveSprite(mySprite)
-    pl2 = sprites.create(img`
+    player1.setPosition(27, 21)
+    player2 = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -41,10 +37,10 @@ multiplayer.onConnected(function () {
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.Player)
-    controller.player2.moveSprite(pl2)
+    multiplayer.movePlayers(player1, player2, 100, 100)
 })
-let pl2: Sprite = null
-let mySprite: Sprite = null
+let player2: Sprite = null
+let player1: Sprite = null
 multiplayer.drawTitle("SPACE", "INVADERS", 1)
 let mySprite2 = sprites.create(img`
 . . . . . . . c d . . . . . . . 
