@@ -16,6 +16,15 @@ namespace multiplayer {
        
     }
 
+    // group="Gameplay"
+    //% blockId=onConnected block="on multiplayer connected"
+    //% blockAllowMultiple=0
+    export function onConnected(a: () => void): void {
+        if (!a) return;
+        funcOnConnected = a;
+        return;
+    }
+
     game.onShade(function () {
         waitForOtherPlayer();
     })
@@ -29,6 +38,8 @@ enum ProgramState {
     Playing = 2,
     Disconnected = 3
 }
+
+let funcOnConnected: () => void;
 
 let programState = ProgramState.Waiting;
 
@@ -68,7 +79,8 @@ function waitForOtherPlayer() {
             programState = ProgramState.Playing;
             //const g = new multiplayer.Game(socket);
             //g.startGame();
-            startGame();
+            //startGame();
+            funcOnConnected();
             return;
 
         }

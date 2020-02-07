@@ -1,4 +1,7 @@
 function startGame () {
+	
+}
+multiplayer.onConnected(function () {
     scene.setBackgroundColor(4)
     mySprite = sprites.create(img`
 . . . . . . . . . . . . . . . . 
@@ -39,7 +42,7 @@ function startGame () {
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.Player)
     controller.player2.moveSprite(pl2)
-}
+})
 let pl2: Sprite = null
 let mySprite: Sprite = null
 multiplayer.multiPlayerStart()
