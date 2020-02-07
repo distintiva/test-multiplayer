@@ -1,0 +1,22 @@
+{
+    "name": "test",
+    "description": "",
+    "dependencies": {
+        "device": "*",
+        "jacdac-game": "*",
+        "keyboard": "*",
+        "controller": "*",
+        "edge-connector": "*"
+    },
+    "files": [
+        "main.blocks",
+        "main.ts",
+        "README.md",
+        "socket.ts",
+        "multiplayer.ts"
+    ],
+    "preferredEditor": "blocksprj",
+    "testFiles": [
+        "test.ts"
+    ]
+}
