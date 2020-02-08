@@ -42,6 +42,7 @@ multiplayer.onConnected(function () {
 let player2: Sprite = null
 let player1: Sprite = null
 multiplayer.drawTitle("SPACE", "INVADERS", 1)
+multiplayer.waitMessage("Esperando conexión", 1, 9)
 let mySprite2 = sprites.create(img`
 . . . . . . . c d . . . . . . . 
 . . . . . . . c d . . . . . . . 

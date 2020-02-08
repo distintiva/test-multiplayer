@@ -25,6 +25,8 @@ namespace multiplayer {
     let funcOnConnected: () => void;
 
     let waitTitle = "", waitSubtitle = "", waitTitleColor = 1;
+    let waitMessageText = "", waitMessageColor = 8, waitProgressBarColor = 8;
+
 
     let pl1: Sprite, pl2: Sprite;
     let _vx: number = 100, _vy: number = 100;
@@ -59,7 +61,7 @@ namespace multiplayer {
     }
 
     // group="Gameplay"
-    //% blockId=drawTitle block="show title $text || subtitle $sub | color $color"
+    //% blockId=drawTitle block="show title $text || subtitle $sub | color %color=colorindexpicker"
     //% blockAllowMultiple=0
     //% color.defl=1
     //% color.min=1 color.max=15
@@ -70,6 +72,19 @@ namespace multiplayer {
         waitTitle = text;
         waitSubtitle = sub;
         waitTitleColor = color;
+    }
+
+    //% blockId=waitMessage block="wait message $text || color %color=colorindexpicker | progress color %barcolor=colorindexpicker"
+    //% blockAllowMultiple=0
+    //% color.defl=8
+    //% barcolor.defl=8
+    //% text.defl="Waiting for connection"
+    //% expandableArgumentMode="toggle"
+    //% inlineInputMode=inline
+    export function waitMessage(text: string, color: number=8, barcolor:number=8): void {
+        waitMessageText = text;
+        waitMessageColor = color;
+        waitProgressBarColor = barcolor;
     }
 
     // group="Gameplay"
@@ -172,13 +187,13 @@ function waitForOtherPlayer() {
         screen.printCenter(waitTitle, 10, waitTitleColor, image.font12);
         screen.printCenter(waitSubtitle, 26, waitTitleColor, image.font12);
 
-        screen.printCenter("Waiting for connection", 80, 9, image.font8);
+        screen.printCenter(waitMessageText, 80, waitMessageColor, image.font8);
 
         if (flip) {
-            screen.fillRect(30, 95, offset, 2, 3);
+            screen.fillRect(30, 95, offset, 3, waitProgressBarColor);
         }
         else {
-            screen.fillRect(30 + offset, 95, 100 - offset, 2, 3);
+            screen.fillRect(30 + offset, 95, 100 - offset, 3, waitProgressBarColor);
         }
 
         offset = (offset + 1) % 100;
