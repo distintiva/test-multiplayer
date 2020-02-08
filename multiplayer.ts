@@ -2,8 +2,8 @@
 // Add your code here
 //jacdac.controllerService.stop();
 
-//% weight=0 color=#b8860b icon="\uf021" block="Sprite Transforms"
-//% advanced=true
+//% weight=0 color=#DDB012 icon="\uf0e8" block="Real Multiplayer"
+//% advanced=false
 namespace multiplayer {
     enum GameMessage {
         Update = 7,

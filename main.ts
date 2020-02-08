@@ -1,3 +1,6 @@
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+	
+})
 multiplayer.onConnected(function () {
     scene.setBackgroundColor(4)
     player1 = sprites.create(img`
@@ -63,3 +66,9 @@ let mySprite2 = sprites.create(img`
 `, SpriteKind.Player)
 effects.starField.startScreenEffect()
 multiplayer.multiPlayerStart()
+game.onUpdate(function () {
+	
+})
+forever(function () {
+	
+})
