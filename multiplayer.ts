@@ -13,7 +13,7 @@ namespace multiplayer {
         HudUpdate = 11
     }
 
-    const socket = multiplayer.Socket.getInstance();
+    const socket =  multiplayer.Socket.getInstance();
 
     enum ProgramState {
         Waiting = 0,
@@ -35,6 +35,8 @@ namespace multiplayer {
 
     let gameStarted = false;
 
+    let useHWMultiplayer = false;
+
     const dbFont = image.doubledFont(image.font8);
 
     let offset = 0;
@@ -45,8 +47,11 @@ namespace multiplayer {
     //% block="start mutiplayer game"
     //% sprite.shadow="variables_get" angleChange.defl=0
     export function multiPlayerStart():void {
+        
         jacdac.controllerService.stop();
+        useHWMultiplayer = true;
 
+       
        
        
     }
@@ -102,10 +107,8 @@ namespace multiplayer {
 
        if (isPlayerOne()) {
            controller.moveSprite(pl1, _vx, _vy);
-
        } else {
            controller.moveSprite(pl2, _vx, _vy);
-
        }
 
         
@@ -114,7 +117,15 @@ namespace multiplayer {
 
 
     game.onShade(function () {
-        waitForOtherPlayer();
+        if( useHWMultiplayer ){
+            waitForOtherPlayer();
+        }else{
+
+            if (!gameStarted){
+                 funcOnConnected();  
+                 gameStarted = true;
+            }
+        }
     })
 
     game.onUpdateInterval(100, () => {
@@ -256,6 +267,7 @@ enum SpriteKindLegacy {
 }
 
 function isPlayerOne() {
+    if( !useHWMultiplayer ) return true;
     return socket.session.playerNumber === 1;
 }
 }
