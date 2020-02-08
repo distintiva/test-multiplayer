@@ -1,3 +1,29 @@
+multiplayer.onMasterLoop(2000, function () {
+    mySprite = sprites.create(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . c c c . . . . . . 
+. . . . . . a b a a . . . . . . 
+. . . . . c b a f c a c . . . . 
+. . . . c b b b f f a c c . . . 
+. . . . b b f a b b a a c . . . 
+. . . . c b f f b a f c a . . . 
+. . . . . c a a c b b a . . . . 
+. . . . . . c c c c . . . . . . 
+. . . . . . . c . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`, SpriteKind.Player)
+    mySprite.setPosition(65, 0)
+    mySprite.setVelocity(0, 50)
+    mySprite.setFlag(SpriteFlag.AutoDestroy, true)
+})
+sprites.onCreated(SpriteKind.Player, function (sprite) {
+	
+})
 multiplayer.onConnected(function () {
     scene.setBackgroundColor(4)
     player1 = sprites.create(img`
@@ -41,6 +67,7 @@ multiplayer.onConnected(function () {
 })
 let player2: Sprite = null
 let player1: Sprite = null
+let mySprite: Sprite = null
 multiplayer.drawTitle("SPACE", "INVADERS", 1)
 multiplayer.waitMessage("Esperando conexión", 1, 9)
 let mySprite2 = sprites.create(img`
@@ -62,3 +89,6 @@ let mySprite2 = sprites.create(img`
 8 8 8 8 8 8 6 6 7 7 7 7 5 7 6 6 
 `, SpriteKind.Player)
 effects.starField.startScreenEffect()
+game.onUpdateInterval(500, function () {
+	
+})

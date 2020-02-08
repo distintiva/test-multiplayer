@@ -23,6 +23,7 @@ namespace multiplayer {
     }
 
     let funcOnConnected: () => void;
+    let funcOnMasterLoop: () => void;
 
     let waitTitle = "", waitSubtitle = "", waitTitleColor = 1;
     let waitMessageText = "", waitMessageColor = 8, waitProgressBarColor = 8;
@@ -56,13 +57,25 @@ namespace multiplayer {
        
     }
 
-    // group="Gameplay"
+
     //% blockId=onConnected block="on multiplayer connected"
     //% blockAllowMultiple=0
     export function onConnected(a: () => void): void {
         if (!a) return;
         funcOnConnected = a;
         return;
+    }
+
+    //% blockId=onMasterLoop block="on master loop every $every"
+    //% every.shadow="timePicker"
+    export function onMasterLoop(every:number, a: () => void ): void {
+        if (!a) return;
+        
+        if( isPlayerOne() ){
+            game.onUpdateInterval(every, a );
+        }
+
+
     }
 
     // group="Gameplay"
@@ -111,9 +124,18 @@ namespace multiplayer {
            controller.moveSprite(pl2, _vx, _vy);
        }
 
+       //- on simulator mode
+       if( !useHWMultiplayer ){
+           controller.player2.moveSprite(pl2, _vx, _vy)  ;     
+       }
+
         
     }
  
+//==================================
+    sprites.onCreated(SpriteKind.Player, function (sprite) {
+           // console.log(sprite.image.  );
+    })
 
 
     game.onShade(function () {
