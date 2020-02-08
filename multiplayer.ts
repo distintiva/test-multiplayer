@@ -133,8 +133,29 @@ namespace multiplayer {
     }
  
 //==================================
-    sprites.onCreated(SpriteKind.Player, function (sprite) {
+
+
+   
+
+    sprites.onCreated(SpriteKind.Enemy, function (sprite) {
            // console.log(sprite.image.  );
+
+           let b:Buffer = control.createBuffer(0) ;
+           let im:Image  = sprite.image;
+           
+           if(pl1==undefined) return;
+           
+            for(let c=0;c<16;c++){
+                let tmp: Buffer = control.createBuffer(16);
+                sprite.image.getRows(c, tmp );
+                b = b.concat(tmp);
+            }
+
+           
+           
+           //pl1.image.setRows(2, b);
+           console.log("buffer");
+           console.log(    (b.toHex())  );
     })
 
 

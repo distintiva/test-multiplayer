@@ -1,22 +1,22 @@
 multiplayer.onMasterLoop(2000, function () {
     mySprite = sprites.create(img`
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . c c c . . . . . . 
-. . . . . . a b a a . . . . . . 
-. . . . . c b a f c a c . . . . 
-. . . . c b b b f f a c c . . . 
-. . . . b b f a b b a a c . . . 
-. . . . c b f f b a f c a . . . 
-. . . . . c a a c b b a . . . . 
-. . . . . . c c c c . . . . . . 
-. . . . . . . c . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-`, SpriteKind.Player)
+2 3 5 4 6 9 a b e f 1 . . . . . 
+2 3 5 4 6 9 a b e f 1 . . . . . 
+2 3 5 4 6 9 a b e f 1 . . . . . 
+2 3 5 4 6 9 a b e f 1 . . . . . 
+2 3 5 4 6 9 a b e f 1 . . . . . 
+2 3 5 4 6 9 a b e f 1 . . . . . 
+2 3 5 4 6 9 a b e f 1 . . . . . 
+2 3 5 4 6 9 a b e f 1 c . . . . 
+2 3 5 4 6 9 a b e f 1 c c . . . 
+2 3 5 4 6 9 a b e f 1 a c . . . 
+2 3 5 4 6 9 a b e f 1 c a . . . 
+2 3 5 4 6 9 a b e f 1 a . . . . 
+2 3 5 4 6 9 a b e f 1 . . . . . 
+2 3 5 4 6 9 a b e f 1 . . . . . 
+2 3 5 4 6 9 a b e f 1 . . . . . 
+2 3 5 4 6 9 a b e f 1 . . . . . 
+`, SpriteKind.Enemy)
     mySprite.setPosition(65, 0)
     mySprite.setVelocity(0, 50)
     mySprite.setFlag(SpriteFlag.AutoDestroy, true)
