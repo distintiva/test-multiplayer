@@ -10,11 +10,21 @@ namespace multiplayer {
         LaserCreated = 8,
         AsteroidCreated = 9,
         AsteroidDestroyed = 10,
-        HudUpdate = 11
+        HudUpdate = 11,
+        CreateSprite = 20
     }
 
 
-     
+function imageCRC( im:Image):number{
+    let imcrc = 0;
+    for (let f = 0; f < im.height; f++) {
+        for (let c = 0; c < im.width; c++) {
+            let px = im.getPixel(f, c);
+            imcrc += px * c + (c * f);
+        }
+    }
+    return imcrc
+}
 
 function test(){
     let b: Buffer = control.createBuffer(0);
@@ -22,19 +32,13 @@ function test(){
 
     if (pl1 == undefined) return;
 
-    let imcrc=0;
-    for (let f = 0; f < im.height; f++) {
-        for (let c = 0; c < im.width; c++) {
-            let px = im.getPixel(f, c);
-            imcrc += px*c + (c*f);
-        }
-    }
-
 
 
     //pl1.image.setRows(2, b);
     console.log("buffer");
-    console.log( imcrc );
+    console.log(imageCRC(im) );
+
+   // createSprite(50, 50, 26064);
     
   //  console.log(jacdac.jd_crc(b));
 }
@@ -80,8 +84,10 @@ function test(){
     //% block="shared image %img=screen_image_picker"
     export function myFunction(img: Image): void { 
 
-       images[1325] = img;
+       images[ imageCRC(img) ] = img;
 
+        console.log( "IMAGE SHARED:" );
+        console.log(imageCRC(img) );
     }
 
 
@@ -111,9 +117,14 @@ function test(){
     //% every.shadow="timePicker"
     export function onMasterLoop(every:number, a: () => void ): void {
         if (!a) return;
+
+       
         
-        if( isPlayerOne() ){
-            game.onUpdateInterval(every, a );
+        if(  isPlayerOne() ){
+            game.onUpdateInterval(every,   function(){
+                if ( programState == ProgramState.Playing && isPlayerOne() )  a();
+            }  
+            );
         }
 
 
@@ -181,22 +192,33 @@ function test(){
     sprites.onCreated(SpriteKind.Enemy, function (sprite) {
            // console.log(sprite.image.  );
 
+           if( programState != ProgramState.Playing ) return;
+
+           console.log( "sprite-created");
+           console.log(programState);
+
+
            let b:Buffer = control.createBuffer(0) ;
            let im:Image  = sprite.image;
            
-           if(pl1==undefined) return;
-           
-            for(let c=0;c<16;c++){
-                let tmp: Buffer = control.createBuffer(16);
-                sprite.image.getRows(c, tmp );
-                b = b.concat(tmp);
-            }
+        console.log( sprite.x);
 
-           
-           
-           //pl1.image.setRows(2, b);
-          // console.log("buffer");
-          // console.log(    (b.toHex())  );
+
+           if( useHWMultiplayer ){
+           const packet = new SocketPacket();
+           packet.arg1 = GameMessage.CreateSprite;
+           packet.arg2 = 0;
+           packet.arg3 = sprite.x;
+           packet.arg4 = sprite.y;
+           packet.arg5 = sprite.vx;
+           packet.arg6 = sprite.vy;
+           packet.arg7 = imageCRC(im);
+
+           socket.sendCustomMessage(packet);
+
+           console.log("Send Create Sprite");
+           }
+
     })
 
 
@@ -208,17 +230,35 @@ function test(){
             if (!gameStarted){
                  funcOnConnected();  
                  gameStarted = true;
+                 programState = ProgramState.Playing;
             }
         }
     })
 
     game.onUpdateInterval(100, () => {
-        if (programState == ProgramState.Playing){
+        if (  programState == ProgramState.Playing){
             sendPlayerState();
         }
         //this.sendPlayerState();
     });
 
+
+
+    function createSprite(x: number, y: number, vx: number, vy: number, imgcrc:number) {
+        
+        //const sprite = this.st.createSprite(sprites.space.spaceAsteroid2, SpriteKindLegacy.Asteroid, id);
+        const sprite = new Sprite(images[imgcrc] );
+
+        
+        sprite.x = x;
+        sprite.y = y;
+        sprite.vx = vx;
+        sprite.vy = vy;
+
+
+        sprite.setFlag(SpriteFlag.AutoDestroy, true);
+
+    }
 
     function sendPlayerState(kind = GameMessage.Update, arg = 0) {
         const playerSprite = isPlayerOne() ? pl1 : pl2;
@@ -249,6 +289,11 @@ function test(){
             case GameMessage.Update:
                 updatePlayerState(packet);
                 break;
+            case GameMessage.CreateSprite:
+                createSprite(packet.arg3, packet.arg4, packet.arg5, packet.arg6, packet.arg7);
+                console.log("CREATE: ");
+                console.log(packet.arg7);
+                break    
             /*case GameMessage.LaserCreated:
                 this.updatePlayerState(packet);
                 if (isPlayerOne()) {
@@ -298,11 +343,12 @@ function waitForOtherPlayer() {
     else if (programState === ProgramState.Counting) {
         readyCount -= game.eventContext().deltaTimeMillis;
         if (readyCount <= 0) {
-            programState = ProgramState.Playing;
+           
             //const g = new multiplayer.Game(socket);
             //g.startGame();
             //startGame();
             funcOnConnected();
+            programState = ProgramState.Playing;
             return;
 
         }

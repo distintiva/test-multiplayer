@@ -16,7 +16,7 @@
         "multiplayer.ts",
         "images.ts"
     ],
-    "preferredEditor": "blocksprj",
+    "preferredEditor": "tsprj",
     "testFiles": [
         "test.ts"
     ]

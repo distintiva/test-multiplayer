@@ -26,7 +26,7 @@ namespace multiplayer {
 
     export class SocketPacket {
         constructor(public readonly data?: Buffer) {
-            if (!this.data) this.data = control.createBuffer(17);
+            if (!this.data) this.data = control.createBuffer(25);
         }
 
         get messageType(): SocketMessages {
@@ -100,6 +100,22 @@ namespace multiplayer {
         set arg5(val: number) {
             this.data.setNumber(NumberFormat.Int16LE, 15, val);
         }
+
+        get arg6() {
+            return this.data.getNumber(NumberFormat.Int16LE, 17)
+        }
+
+        set arg6(val: number) {
+            this.data.setNumber(NumberFormat.Int16LE, 17, val);
+        }
+        get arg7() {
+            return this.data.getNumber(NumberFormat.UInt32LE, 19)
+        }
+
+        set arg7(val: number) {
+            this.data.setNumber(NumberFormat.UInt32LE, 19, val);
+        }
+
     }
 
     export class Socket extends jacdac.Broadcast {
