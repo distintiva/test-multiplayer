@@ -13,7 +13,8 @@
         "main.ts",
         "README.md",
         "socket.ts",
-        "multiplayer.ts"
+        "multiplayer.ts",
+        "images.ts"
     ],
     "preferredEditor": "blocksprj",
     "testFiles": [

@@ -71,12 +71,18 @@ function test(){
     let flip = true;
     let readyCount = 3000;
 
+    export interface IHash{
+        [details:number]: Image;
+    }
+    let images:IHash = {};
     
     //% blockId=myFunction
-    //% block="as $myParam"
-    //% myParam.shadow="lists_create_with"
-    //% myParam.defl="inner_shadow_block"
-    function myFunction(myParam: number[]): void { }
+    //% block="shared image %img=screen_image_picker"
+    export function myFunction(img: Image): void { 
+
+       images[1325] = img;
+
+    }
 
 
     //% blockId=multiPlayerStart
