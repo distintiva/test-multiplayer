@@ -91,6 +91,20 @@ function test(){
     }
 
 
+    
+    //% blockId=sharedImgsb
+    //% block="shared images %img"
+    //% img.shadow="lists_create_with"
+    export function sharedImgs(img: Image[]): void {
+
+        img.forEach(function (value: Image, index: number) {
+            images[imageCRC(value)] = value;
+            console.log("IMAGEN " + index)
+        });
+
+    }
+
+
     //% blockId=multiPlayerStart
     //% block="start mutiplayer game5"
     export function multiPlayerStart():void {
@@ -233,9 +247,40 @@ function test(){
     game.onUpdateInterval(100, () => {
         if (  programState == ProgramState.Playing && useHWMultiplayer ){
             sendPlayerState();
+
+              if (newCreated.length) {
+                console.log("Sprites created " + newCreated.length)
+
+                const sprite: Sprite = newCreated[newCreated.length - 1];
+
+                const packet = new SocketPacket();
+                packet.arg1 = GameMessage.CreateSprite;
+                packet.arg2 = 0;
+                packet.arg3 = sprite.x;
+                packet.arg4 = sprite.y;
+                packet.arg5 = sprite.vx;
+                packet.arg6 = sprite.vy;
+                packet.arg7 = imageCRC(sprite.image);
+
+
+                socket.sendCustomMessage(packet);
+
+                newCreated.pop();
+
+
+            }
         }
-        //this.sendPlayerState();
+       
     });
+
+     let newCreated:Sprite[]=[];
+
+    sprites.onCreated(SpriteKind.Enemy, function (sprite) {
+        
+        newCreated.push(sprite);
+
+    })
+
 
 
    
