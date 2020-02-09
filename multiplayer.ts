@@ -38,7 +38,7 @@ function test(){
     console.log("buffer");
     console.log(imageCRC(im) );
 
-   // createSprite(50, 50, 26064);
+    createSprite(100, 50, 10, 100, 26064);
     
   //  console.log(jacdac.jd_crc(b));
 }
@@ -93,15 +93,42 @@ function test(){
 
     //% blockId=multiPlayerStart
     //% block="start mutiplayer game5"
-    //% sprite.shadow="variables_get" angleChange.defl=0
     export function multiPlayerStart():void {
-        
+       
         jacdac.controllerService.stop();
         useHWMultiplayer = true;
+       
+    }
 
-       
-       
-       
+    //% blockId=SrpiteChanged
+    //% block="sprite changed %sprite"
+    //% sprite.shadow="variables_get" angleChange.defl=0
+    export function spriteChanged(sprite: Sprite): void {
+
+        if (programState != ProgramState.Playing) return;
+
+
+        if (useHWMultiplayer) {
+
+            const packet = new SocketPacket();
+            packet.arg1 = GameMessage.CreateSprite;
+            packet.arg2 = 0;
+            packet.arg3 = sprite.x;
+            packet.arg4 = sprite.y;
+            packet.arg5 = sprite.vx;
+            packet.arg6 = sprite.vy;
+            packet.arg7 = imageCRC(sprite.image);
+
+
+            socket.sendCustomMessage(packet);
+
+            console.log("Send Create");
+            console.log(sprite.x);
+            console.log(sprite.y);
+            console.log(sprite.vx);
+            console.log(sprite.vy);
+        }
+
     }
 
 
@@ -188,39 +215,7 @@ function test(){
 
 
    
-
-    sprites.onCreated(SpriteKind.Enemy, function (sprite) {
-           // console.log(sprite.image.  );
-
-           if( programState != ProgramState.Playing ) return;
-
-           console.log( "sprite-created");
-           console.log(programState);
-
-
-           let b:Buffer = control.createBuffer(0) ;
-           let im:Image  = sprite.image;
-           
-        console.log( sprite.x);
-
-
-           if( useHWMultiplayer ){
-           const packet = new SocketPacket();
-           packet.arg1 = GameMessage.CreateSprite;
-           packet.arg2 = 0;
-           packet.arg3 = sprite.x;
-           packet.arg4 = sprite.y;
-           packet.arg5 = sprite.vx;
-           packet.arg6 = sprite.vy;
-           packet.arg7 = imageCRC(im);
-
-           socket.sendCustomMessage(packet);
-
-           console.log("Send Create Sprite");
-           }
-
-    })
-
+    
 
     game.onShade(function () {
         if( useHWMultiplayer ){
@@ -236,27 +231,31 @@ function test(){
     })
 
     game.onUpdateInterval(100, () => {
-        if (  programState == ProgramState.Playing){
+        if (  programState == ProgramState.Playing && useHWMultiplayer ){
             sendPlayerState();
         }
         //this.sendPlayerState();
     });
 
 
-
+   
     function createSprite(x: number, y: number, vx: number, vy: number, imgcrc:number) {
         
         //const sprite = this.st.createSprite(sprites.space.spaceAsteroid2, SpriteKindLegacy.Asteroid, id);
-        const sprite = new Sprite(images[imgcrc] );
+        const  sprite = sprites.create (images[imgcrc], SpriteKind.Enemy  );
 
-        
+        sprite.setFlag(SpriteFlag.AutoDestroy, true);
+
+        //sprite.setKind(SpriteKind.Enemy);
         sprite.x = x;
         sprite.y = y;
         sprite.vx = vx;
         sprite.vy = vy;
 
-
         sprite.setFlag(SpriteFlag.AutoDestroy, true);
+
+       // spriteT = sprite;
+        
 
     }
 

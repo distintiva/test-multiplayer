@@ -17,9 +17,10 @@ multiplayer.onMasterLoop(2000, function () {
         2 3 5 4 6 9 a b e f 1 . . . . .
         2 3 5 4 6 9 a b e f 1 . . . . .
     `, SpriteKind.Enemy)
-    mySprite.setPosition(Math.randomRange(20, 100), 0)
     mySprite.setVelocity(0, 50)
+    mySprite.setPosition(Math.randomRange(20, 100), 0)
     mySprite.setFlag(SpriteFlag.AutoDestroy, true)
+    multiplayer.spriteChanged(mySprite)
 })
 sprites.onCreated(SpriteKind.Player, function (sprite) {
 	
