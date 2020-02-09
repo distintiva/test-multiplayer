@@ -13,6 +13,33 @@ namespace multiplayer {
         HudUpdate = 11
     }
 
+
+     
+
+function test(){
+    let b: Buffer = control.createBuffer(0);
+    let im: Image = pl1.image;
+
+    if (pl1 == undefined) return;
+
+    let imcrc=0;
+    for (let f = 0; f < im.height; f++) {
+        for (let c = 0; c < im.width; c++) {
+            let px = im.getPixel(f, c);
+            imcrc += px*c + (c*f);
+        }
+    }
+
+
+
+    //pl1.image.setRows(2, b);
+    console.log("buffer");
+    console.log( imcrc );
+    
+  //  console.log(jacdac.jd_crc(b));
+}
+
+
     const socket =  multiplayer.Socket.getInstance();
 
     enum ProgramState {
@@ -44,8 +71,16 @@ namespace multiplayer {
     let flip = true;
     let readyCount = 3000;
 
-    //% blockId=transform_change_rotation
-    //% block="start mutiplayer game"
+    
+    //% blockId=myFunction
+    //% block="as $myParam"
+    //% myParam.shadow="lists_create_with"
+    //% myParam.defl="inner_shadow_block"
+    function myFunction(myParam: number[]): void { }
+
+
+    //% blockId=multiPlayerStart
+    //% block="start mutiplayer game5"
     //% sprite.shadow="variables_get" angleChange.defl=0
     export function multiPlayerStart():void {
         
@@ -128,7 +163,7 @@ namespace multiplayer {
        if( !useHWMultiplayer ){
            controller.player2.moveSprite(pl2, _vx, _vy)  ;     
        }
-
+        test();
         
     }
  
@@ -154,8 +189,8 @@ namespace multiplayer {
            
            
            //pl1.image.setRows(2, b);
-           console.log("buffer");
-           console.log(    (b.toHex())  );
+          // console.log("buffer");
+          // console.log(    (b.toHex())  );
     })
 
 
