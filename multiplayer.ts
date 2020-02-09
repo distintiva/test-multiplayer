@@ -27,20 +27,7 @@ function imageCRC( im:Image):number{
 }
 
 function test(){
-    let b: Buffer = control.createBuffer(0);
-    let im: Image = pl1.image;
-
-    if (pl1 == undefined) return;
-
-
-
-    //pl1.image.setRows(2, b);
-    console.log("buffer");
-    console.log(imageCRC(im) );
-
-    createSprite(100, 50, 10, 100, 26064);
-    
-  //  console.log(jacdac.jd_crc(b));
+ 
 }
 
 
@@ -106,12 +93,24 @@ function test(){
 
 
     //% blockId=multiPlayerStart
-    //% block="start mutiplayer game5"
-    export function multiPlayerStart():void {
+    //% block="wait for mutiplayer connection %activate=toggleOnOff"
+    export function multiPlayerStart(activate: boolean ):void {
        
+       if(! activate) return;
         jacdac.controllerService.stop();
         useHWMultiplayer = true;
        
+    }
+
+    //% blockId=CurrentPlayer
+    //% block="current player"
+    export function CurrentPlayer(): Sprite {
+
+        if( isPlayerOne() ){
+            return pl1;
+        }
+        return pl2;
+
     }
 
     //% blockId=SrpiteChanged
@@ -146,6 +145,9 @@ function test(){
     }
 
 
+
+
+
     //% blockId=onConnected block="on multiplayer connected"
     //% blockAllowMultiple=0
     export function onConnected(a: () => void): void {
@@ -172,7 +174,7 @@ function test(){
     }
 
     // group="Gameplay"
-    //% blockId=drawTitle block="show title $text || subtitle $sub | color %color=colorindexpicker"
+    //% blockId=drawTitle block="wait title $text || subtitle $sub | color %color=colorindexpicker"
     //% blockAllowMultiple=0
     //% color.defl=1
     //% color.min=1 color.max=15
@@ -281,8 +283,21 @@ function test(){
 
     })
 
+    sprites.onCreated(SpriteKind.Projectile, function (sprite) {
+
+        newCreated.push(sprite);
+
+    })
+
+    sprites.onCreated(SpriteKind.Food, function (sprite) {
+
+        newCreated.push(sprite);
+
+    })
 
 
+  
+   
    
     function createSprite(x: number, y: number, vx: number, vy: number, imgcrc:number) {
         
