@@ -52,7 +52,7 @@ let mySprite: Sprite = null
 let player2: Sprite = null
 let player1: Sprite = null
 multiplayer.drawTitle("SPACE", "INVADERS", 1)
-multiplayer.waitMessage("Esperando conexión", 1, 9)
+multiplayer.waitMessage("Waiting for connection", 1, 9)
 player1 = sprites.create(img`
 . . . . . . . c d . . . . . . . 
 . . . . . . . c d . . . . . . . 
@@ -143,4 +143,4 @@ f f 5 5 5 5 5 5 5 5 5 5 5 5 5 5
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `])
-multiplayer.multiPlayerStart(false)
+multiplayer.multiPlayerStart(true)

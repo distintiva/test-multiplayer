@@ -6,15 +6,13 @@
         "jacdac-game": "*",
         "keyboard": "*",
         "controller": "*",
-        "edge-connector": "*"
+        "edge-connector": "*",
+        "pxt-real-multiplayer": "github:distintiva/pxt-real-multiplayer#master"
     },
     "files": [
         "main.blocks",
         "main.ts",
-        "README.md",
-        "socket.ts",
-        "multiplayer.ts",
-        "images.ts"
+        "README.md"
     ],
     "preferredEditor": "blocksprj",
     "testFiles": [
