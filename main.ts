@@ -23,9 +23,11 @@ c c b a a a a b 6 b b a b b a .
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     if (multiplayer.spriteIsFrom(sprite, multiplayer.Players12.Player1)) {
+        otherSprite.destroy()
         info.changeScoreBy(1)
     }
     if (multiplayer.spriteIsFrom(sprite, multiplayer.Players12.Player2)) {
+        otherSprite.destroy()
         info.player2.changeScoreBy(1)
     }
 })
@@ -76,6 +78,8 @@ multiplayer.onConnected(function () {
     effects.starField.startScreenEffect()
     player1.setPosition(40, 100)
     player2.setPosition(120, 100)
+    info.setScore(0)
+    info.player2.setScore(0)
     multiplayer.movePlayers(player1, player2, 100, 100)
 })
 let laser: Sprite = null
