@@ -1,68 +1,75 @@
 multiplayer.onMasterLoop(2000, function () {
     mySprite = sprites.create(img`
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 c . . . . 
-2 3 5 4 6 9 a b e f 1 c c . . . 
-2 3 5 4 6 9 a b e f 1 a c . . . 
-2 3 5 4 6 9 a b e f 1 c a . . . 
-2 3 5 4 6 9 a b e f 1 a . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
+. . . . . . . . c c c c . . . . 
+. . . . c c c c c c c c c . . . 
+. . . c f c c a a a a c a c . . 
+. . c c f f f f a a a c a a c . 
+. . c c a f f c a a f f f a a c 
+. . c c a a a a b c f f f a a c 
+. c c c c a c c b a f c a a c c 
+c a f f c c c a b b 6 b b b c c 
+c a f f f f c c c 6 b b b a a c 
+c a a c f f c a 6 6 b b b a a c 
+c c b a a a a b 6 b b a b b a . 
+. c c b b b b b b b a c c b a . 
+. . c c c b c c c b a a b c . . 
+. . . . c b a c c b b b c . . . 
+. . . . c b b a a 6 b c . . . . 
+. . . . . . b 6 6 c c . . . . . 
 `, SpriteKind.Enemy)
     mySprite.setVelocity(0, 50)
-    mySprite.setPosition(Math.randomRange(20, 100), 0)
+    mySprite.setPosition(Math.randomRange(20, 120), 0)
     mySprite.setFlag(SpriteFlag.AutoDestroy, true)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
-	
+    if (multiplayer.spriteIsFrom(sprite, multiplayer.Players12.Player1)) {
+        info.changeScoreBy(1)
+    }
+    if (multiplayer.spriteIsFrom(sprite, multiplayer.Players12.Player2)) {
+        info.player2.changeScoreBy(1)
+    }
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (multiplayer.isPlayer1()) {
-        projectile2 = sprites.createProjectileFromSprite(img`
+        laser = sprites.createProjectileFromSprite(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . 5 5 . . . . . . . 
-. . . . . . . 5 5 . . . . . . . 
-. . . . . . . 5 5 . . . . . . . 
-. . . . . . . 5 5 . . . . . . . 
-. . . . . . . 5 5 . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
+. . . . . . . 1 . . . . . . . . 
+. . . . . . 1 1 1 . . . . . . . 
+. . . . . . 1 5 1 . . . . . . . 
+. . . . . . 1 5 1 . . . . . . . 
+. . . . . . 1 5 1 . . . . . . . 
+. . . . . . 1 5 1 . . . . . . . 
+. . . . . . 1 5 1 . . . . . . . 
+. . . . . . 4 2 4 . . . . . . . 
+. . . . . 2 5 . 5 2 . . . . . . 
+. . . . . . . 5 . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, player1, 0, -100)
+        multiplayer.spriteOwnsTo(laser, multiplayer.Players12.Player1)
     } else {
-        projectile2 = sprites.createProjectileFromSprite(img`
+        laser = sprites.createProjectileFromSprite(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . 5 5 . . . . . . . 
-. . . . . . . 5 5 . . . . . . . 
-. . . . . . . 5 5 . . . . . . . 
-. . . . . . . 5 5 . . . . . . . 
-. . . . . . . 5 5 . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
+. . . . . . . 1 . . . . . . . . 
+. . . . . . 1 1 1 . . . . . . . 
+. . . . . . 1 5 1 . . . . . . . 
+. . . . . . 1 5 1 . . . . . . . 
+. . . . . . 1 5 1 . . . . . . . 
+. . . . . . 1 5 1 . . . . . . . 
+. . . . . . 1 5 1 . . . . . . . 
+. . . . . . 4 2 4 . . . . . . . 
+. . . . . 2 5 . 5 2 . . . . . . 
+. . . . . . . 5 . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, player2, 0, -100)
+        multiplayer.spriteOwnsTo(laser, multiplayer.Players12.Player2)
     }
 })
 multiplayer.onConnected(function () {
@@ -71,7 +78,7 @@ multiplayer.onConnected(function () {
     player2.setPosition(120, 100)
     multiplayer.movePlayers(player1, player2, 100, 100)
 })
-let projectile2: Sprite = null
+let laser: Sprite = null
 let mySprite: Sprite = null
 let player2: Sprite = null
 let player1: Sprite = null
@@ -116,53 +123,36 @@ e e e e e e 2 2 4 4 4 4 5 4 2 2
 `, SpriteKind.Player)
 player2.setPosition(120, 60)
 multiplayer.sharedImgs([img`
-5 5 5 4 4 4 4 5 5 5 5 5 5 5 5 5 
-5 4 2 2 4 . 4 5 5 4 4 5 5 5 5 5 
-4 4 4 2 4 4 4 4 2 2 2 2 2 2 5 5 
-5 4 4 2 . 4 4 2 4 4 4 4 . . 2 2 
-5 5 4 . 2 4 2 4 . 4 . 4 4 4 2 5 
-5 5 4 . 2 2 . 4 . 4 2 2 2 2 2 5 
-5 2 2 2 7 2 2 2 2 2 4 4 7 5 5 5 
-7 . . . 7 . . . . 7 . 7 7 5 5 5 
-7 . f 7 7 . . . . 7 7 5 7 7 5 5 
-5 f 7 . f f 7 7 7 . 7 5 5 5 5 5 
-f f . . f 7 f . . . . f f f f 5 
-f . . f 5 f f f f f f f f f f f 
-f . f 5 5 5 5 5 5 5 f f f 5 5 5 
-f f 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-`, img`
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 c . . . . 
-2 3 5 4 6 9 a b e f 1 c c . . . 
-2 3 5 4 6 9 a b e f 1 a c . . . 
-2 3 5 4 6 9 a b e f 1 c a . . . 
-2 3 5 4 6 9 a b e f 1 a . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
-2 3 5 4 6 9 a b e f 1 . . . . . 
+. . . . . . . . c c c c . . . . 
+. . . . c c c c c c c c c . . . 
+. . . c f c c a a a a c a c . . 
+. . c c f f f f a a a c a a c . 
+. . c c a f f c a a f f f a a c 
+. . c c a a a a b c f f f a a c 
+. c c c c a c c b a f c a a c c 
+c a f f c c c a b b 6 b b b c c 
+c a f f f f c c c 6 b b b a a c 
+c a a c f f c a 6 6 b b b a a c 
+c c b a a a a b 6 b b a b b a . 
+. c c b b b b b b b a c c b a . 
+. . c c c b c c c b a a b c . . 
+. . . . c b a c c b b b c . . . 
+. . . . c b b a a 6 b c . . . . 
+. . . . . . b 6 6 c c . . . . . 
 `, img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . 5 5 . . . . . . . 
-. . . . . . . 5 5 . . . . . . . 
-. . . . . . . 5 5 . . . . . . . 
-. . . . . . . 5 5 . . . . . . . 
-. . . . . . . 5 5 . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
+. . . . . . . 1 . . . . . . . . 
+. . . . . . 1 1 1 . . . . . . . 
+. . . . . . 1 5 1 . . . . . . . 
+. . . . . . 1 5 1 . . . . . . . 
+. . . . . . 1 5 1 . . . . . . . 
+. . . . . . 1 5 1 . . . . . . . 
+. . . . . . 1 5 1 . . . . . . . 
+. . . . . . 4 2 4 . . . . . . . 
+. . . . . 2 5 . 5 2 . . . . . . 
+. . . . . . . 5 . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
